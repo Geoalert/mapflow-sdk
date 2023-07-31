@@ -1,51 +1,53 @@
 from typing import Optional, Union
-from ..schema import ProcessingSchema, AoiSchema, PostProcessingSchema
-from ..schema.processing import SourceType, CRS, ProviderParamsSchema, ProviderNameSchema
+
+from ..entity import Processing, Aoi, PostProcessingSchema
+from ..entity.processing import SourceType, CRS, ProviderParams, ProviderName
 from ..base import server, object_or_id
 from .. import __version__
 
 
-def get_processing(processing_id: str,
-                   token: str):
+def get(processing_id: str,
+        token: Optional[str] = None):
     response = server.get_json(f'processings/{processing_id}', token)
-    return ProcessingSchema(**response)
+    return Processing(**response)
 
 
-def get_processing_result(processing: Union[ProcessingSchema, str],
-                          token: str):
+def result(processing: Union[Processing, str],
+           token: Optional[str] = None):
     """
     Specify either processing_id or processing (ProcessingSchema). If
     """
-    processing_id = object_or_id(processing, ProcessingSchema)
+    processing_id = object_or_id(processing, Processing)
     response = server.get_json(postfix=f"processings/{processing_id}/result", token=token)
     return response
 
 
-def get_processing_aois(processing: Union[ProcessingSchema, str],
-                        token: str):
-    processing_id = object_or_id(processing, ProcessingSchema)
+def aois(processing: Union[Processing, str],
+         token: Optional[str] = None):
+    processing_id = object_or_id(processing, Processing)
     response = server.get_json(postfix=f"processings/{processing_id}/aois", token=token)
-    return [AoiSchema(**entity) for entity in response]
+    return [Aoi(**entity) for entity in response]
 
 
-def post_processing(name: str,
-                    geometry: dict,
-                    wd_id: str,
-                    url: Optional[str] = None,
-                    source_type: SourceType = SourceType.xyz,
-                    projection: CRS = CRS.web_mercator,
-                    provider_name: Optional[str] =  None,
-                    meta: Optional[dict] = None,
-                    token: str = ""):
+def start(name: str,
+          geometry: dict,
+          wd_id: str,
+          url: Optional[str] = None,
+          source_type: SourceType = SourceType.xyz,
+          projection: CRS = CRS.web_mercator,
+          provider_name: Optional[str] = None,
+          meta: Optional[dict] = None,
+          token: Optional[str] = None):
     if provider_name:
-        provider = ProviderNameSchema(data_provider=provider_name)
+        provider = ProviderName(data_provider=provider_name)
     elif url:
-        provider = ProviderParamsSchema(url=url,
-                                        source_typse=source_type,
-                                        projection=projection)
+        provider = ProviderParams(url=url,
+                                  source_typse=source_type,
+                                  projection=projection)
     else:
         raise ValueError("Provider name or url must be specified")
 
+    # SDK sends information of the version for the server to understand the caller's interface
     sdk_meta = {"source-app": "mapflow-sdk", "version": __version__}
     if not meta:
         meta = sdk_meta
@@ -60,7 +62,7 @@ def post_processing(name: str,
                                       )
 
     response = server.post_json(postfix="processings",
-                     json=processing.model_dump(),
-                     token=token)
+                                json=processing.model_dump(),
+                                token=token)
 
-    return ProcessingSchema(**response)
+    return Processing(**response)

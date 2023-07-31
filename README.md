@@ -22,5 +22,10 @@ You can use Mapflow API directly, but this SDK provides easier access from your 
  Visit [account/API section](https://dev.mapflow.ai/account/api) and get token to use it with API
  
 # Basic usage
+See example
+```bash
+cd example
+python3 example.py <YOUR_MAPFLOW_TOKEN>
+```
 
-see example/example.py
+The example will create file `output.geojson`

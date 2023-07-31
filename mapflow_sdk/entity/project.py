@@ -1,14 +1,14 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-from .model import ModelSchema
+from .model import Model
 
 
-class ProjectSchema(BaseModel):
+class Project(BaseModel):
     id: str
     name: str
     description: Optional[str]
     isDefault: bool
     created: str
     updated: str
-    workflowDefs: List[ModelSchema]
+    workflowDefs: List[Model]

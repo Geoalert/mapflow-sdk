@@ -1,25 +1,26 @@
-from ..schema import ProjectSchema, ProcessingSchema
+from typing import Optional
+from ..entity import Project, Processing
 from ..base import server
 
 
-def get_projects(token: str):
+def all_projects(token: Optional[str] = None):
     response = server.get_json('projects', token)
-    return [ProjectSchema(**entry) for entry in response]
+    return [Project(**entry) for entry in response]
 
 
-def get_default_project(token: str):
+def default(token: Optional[str]=None):
     response = server.get_json('projects/default', token)
-    return ProjectSchema(**response)
+    return Project(**response)
 
 
-def get_project(project_id: str,
-                token: str):
+def get(project_id: str,
+        token: Optional[str] = None):
     response = server.get_json(f'projects/{project_id}', token)
-    return ProjectSchema(**response)
+    return Project(**response)
 
 
-def get_project_processings(project_id: str,
-                            token: str):
+def processings(project_id: str,
+                token: Optional[str] = None):
     response = server.get_json(postfix=f'projects/{project_id}/processings',
                                token=token)
-    return [ProcessingSchema(**entry) for entry in response]
+    return [Processing(**entry) for entry in response]

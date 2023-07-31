@@ -2,14 +2,9 @@ from typing import Optional, Union
 from pydantic import BaseModel
 from enum import Enum
 from pydantic_geojson import PolygonModel, MultiPolygonModel
-from .model import ModelSchema
 
-
-class ProcessingStatus(str, Enum):
-    OK = "OK"
-    IN_PROGRESS = "IN_PROGRESS"
-    FAILED = "FAILED"
-    UNPROCESSED = "UNPROCESSED"
+from .enums import ProcessingStatus
+from .model import Model
 
 
 class Rating(int, Enum):
@@ -20,30 +15,30 @@ class Rating(int, Enum):
     FIVE = 5
 
 
-class RasterLayerSchema(BaseModel):
+class RasterLayer(BaseModel):
     id: str
     tileJsonUrl: str
     tileUrl: str
 
 
-class RatingSchema(BaseModel):
+class UserFeedback(BaseModel):
     rating: Rating
     feedback: Optional[str]
 
 
-class ProcessingSchema(BaseModel):
+class Processing(BaseModel):
     id: str
     name: str
     projectId: str
-    workflowDef: ModelSchema
+    workflowDef: Model
     aoiCount: int
     aoiArea: int
     area: int
     cost: int
     status: ProcessingStatus
     description: Optional[str]
-    rasterLayer: Optional[RasterLayerSchema]
-    rating: Optional[RatingSchema]
+    rasterLayer: Optional[RasterLayer]
+    rating: Optional[UserFeedback]
 
 # ==== POST ==== #
 
@@ -60,11 +55,11 @@ class CRS(str, Enum):
     world_mercator = 'epsg:3395'
 
 
-class ProviderNameSchema(BaseModel):
+class ProviderName(BaseModel):
     data_provider: str
 
 
-class ProviderParamsSchema(BaseModel):
+class ProviderParams(BaseModel):
     url: str
     source_type: Optional[SourceType]
     projection: Optional[CRS]
@@ -74,5 +69,5 @@ class PostProcessingSchema(BaseModel):
     name: str
     geometry: Union[PolygonModel, MultiPolygonModel]
     wdId: str
-    params: Union[ProviderParamsSchema, ProviderNameSchema]
+    params: Union[ProviderParams, ProviderName]
     meta: dict

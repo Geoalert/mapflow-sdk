@@ -2,8 +2,8 @@ from typing import Optional, List
 from pydantic import BaseModel
 from enum import Enum
 
-from .model import ModelSchema
-from .provider import ProviderSchema
+from .model import Model
+from .provider import Provider
 
 
 class BillingType(str, Enum):
@@ -12,12 +12,12 @@ class BillingType(str, Enum):
     AREA = "AREA"
 
 
-class UserSchema(BaseModel):
+class User(BaseModel):
     email: str
     billingType: BillingType
-    models: List[ModelSchema]
+    models: List[Model]
     remainingCredits: int = None
-    dataProviders: Optional[List[ProviderSchema]] = None
+    dataProviders: Optional[List[Provider]] = None
     processedArea: Optional[int] = None
     remainingArea: Optional[int] = None
     memoryLimit: Optional[int] = None

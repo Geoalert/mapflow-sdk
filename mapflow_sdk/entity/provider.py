@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import List, Dict
 
 
-class ProviderSchema(BaseModel):
+class Provider(BaseModel):
     id: str
     name: str
     displayName: str

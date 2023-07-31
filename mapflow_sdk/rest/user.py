@@ -1,8 +1,9 @@
+from typing import Optional
 from ..base import server
-from mapflow_sdk.schema import UserSchema
+from ..entity import User
 
 
-def get_user(token):
+def status(token: Optional[str] = None):
     response = server.get_json(postfix='user/status',
                                token=token)
-    return UserSchema(**response)
+    return User(**response)

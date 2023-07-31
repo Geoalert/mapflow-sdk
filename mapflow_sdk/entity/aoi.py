@@ -1,14 +1,14 @@
 from pydantic import BaseModel
 from pydantic_geojson import PolygonModel, MultiPolygonModel
 from typing import List, Union
-from .processing import ProcessingStatus
-from .error_message import ErrorMessageSchema
+from .enums import ProcessingStatus
+from .error_message import ErrorMessage
 
 
-class AoiSchema(BaseModel):
+class Aoi(BaseModel):
     id: str
     status: ProcessingStatus
     percentCompleted: int
     geometry: Union[PolygonModel, MultiPolygonModel]
     area: int
-    messages: List[ErrorMessageSchema]
+    messages: List[ErrorMessage]

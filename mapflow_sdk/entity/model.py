@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional, Any
 
 
-class ModelSchema(BaseModel):
+class Model(BaseModel):
     id: str
     name: str
     description: str = ""
