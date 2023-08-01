@@ -24,14 +24,22 @@ if __name__ == "__main__":
     # load AOI
     aoi = mf.vector.load_aoi("aoi.geojson")
     # Starting new processing
-    processing = mf.processing.start(name="MyAwesomeProcessing",
-                                     geometry=aoi,
-                                     wd_id=wdid,
-                                     provider_name=providername,
-                                     token=token)
-    # Patiently wait for the processing to finish
+    print("Starting processing")
+    try:
+        processing = mf.processing.start(name="MyAwesomeProcessing",
+                                         geometry=aoi,
+                                         wd_id=wdid,
+                                         provider_name=providername,
+                                         token=token)
+    except Exception as e:
+        print (f"Error while starting processing: {e}")
+        exit(1)
+    else:
+        print(f"Processing {processing.name} sucessfully started with id {processing.id}. "
+              f"Waiting for the processing to finish.")
     while True:
-        time.sleep(60)
+        print(".")
+        time.sleep(10)
         processing = mf.processing.get(processing.id)
         if processing.status != mf.ProcessingStatus.IN_PROGRESS:
             print("Processing finished!")

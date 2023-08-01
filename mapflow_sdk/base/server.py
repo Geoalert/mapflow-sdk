@@ -1,7 +1,7 @@
 import requests
 from typing import Optional
 from urllib.parse import urljoin
-url = "https://whitemaps-duty.mapflow.ai/rest/"
+url = "https://api.mapflow.ai/rest/"
 mapflow_token = ""
 
 
@@ -19,10 +19,12 @@ def login(token: str):
         global mapflow_token
         mapflow_token = token
 
+
 def auth_header(token: Optional[str] = None):
     if token is None:
         token = mapflow_token
     return {"Authorization": f"Basic {token}"}
+
 
 def mapflow_url(postfix: str):
     return urljoin(url, postfix)
