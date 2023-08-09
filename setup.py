@@ -13,8 +13,8 @@ from setuptools import find_packages, setup, Command
 
 # Package meta-data.
 NAME = 'mapflow-sdk'
-DESCRIPTION = '.'
-URL = 'Python library for easy acceess to Mapflow API'
+DESCRIPTION = 'Python library for easy acceess to Mapflow API'
+URL = 'https://github.com/geoalert/mapflow-sdk'
 EMAIL = 'hello@geoalert.io'
 AUTHOR = 'Geoalert'
 REQUIRES_PYTHON = '>=3.8.0'
